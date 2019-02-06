@@ -24,8 +24,8 @@ impl<'a> ProcessMutWithConfig<Result<(), String>> for ImageOperationsProcessor<'
     fn process_mut(&mut self, _config: &Config) -> Result<(), String> {
         // If we don't have the script option defined, do nothing.
 
-        dbg!("TODO: ensure operations are handled per use case");
-        if dbg!(false) {
+        // TODO: ensure operations are handled per use case
+        if false {
             let operations: Result<Vec<Operation>, String> = Ok(vec![]);
 
             self.apply_operations(&operations?)
