@@ -1,5 +1,4 @@
 use crate::config::Config;
-use crate::operations;
 use crate::operations::transformations::apply_operations_on_image;
 use crate::operations::Operation;
 use crate::processor::ProcessMutWithConfig;
