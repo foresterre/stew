@@ -1,7 +1,7 @@
 use image::DynamicImage;
 
 #[cfg(test)]
-const DEFAULT_TEST_IMAGE_PATH: &str = "resources/unsplash_763569_cropped.jpg";
+const DEFAULT_TEST_IMAGE_PATH: &str = "resources/botanical.jpg";
 
 #[cfg(test)]
 pub fn setup_test_image(image: &str) -> DynamicImage {

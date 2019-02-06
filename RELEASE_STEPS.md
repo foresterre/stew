@@ -41,7 +41,7 @@ Blocking:
 
 - [ ] Define update version number [as described here](https://doc.rust-lang.org/cargo/reference/publishing.html#publishing-a-new-version-of-an-existing-crate).
 - [ ] Update the version number in `Cargo.toml`.
-- The Clap App version number in `src/main.rs` will be equal to the version number in `Cargo.toml`.
+- The Clap App version numbers will be equal to the version number in `Cargo.toml`.
 
 
 **Update the dependency licenses to be included in the binary as per their licenses**
@@ -66,9 +66,9 @@ we can move on to the next step.
 
 **Release, Tag & Binaries**
 
-- [ ] Create a release with a version tag on [the github release page](https://github.com/foresterre/sic/releases)
+- [ ] Create a release with a version tag on [the github release page](https://github.com/foresterre/stew/releases)
     - tags are equal to crate version number e.g. `0.5.1`
-    - release title is `sic-<version>` e.g. `sic-0.5.1`
+    - release title is `stew-<version>` e.g. `stew-0.5.1`
 
 
 - [ ] Add Windows and Linux (Ubuntu compiled) binaries to the release
@@ -76,7 +76,7 @@ we can move on to the next step.
 
 ---
 
-[Release steps](https://github.com/foresterre/sic/blob/master/RELEASE_STEPS.md)
+[Release steps](https://github.com/foresterre/stew/blob/master/RELEASE_STEPS.md)
 
 ---
 

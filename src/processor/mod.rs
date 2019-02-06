@@ -2,7 +2,6 @@ use crate::config::Config;
 
 pub(crate) mod conversion;
 pub(crate) mod encoding_format;
-pub(crate) mod help_display;
 pub(crate) mod image_operations;
 pub(crate) mod license_display;
 

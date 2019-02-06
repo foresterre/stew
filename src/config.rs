@@ -5,14 +5,6 @@ pub struct Config {
     // Display license of this software or its dependencies.
     pub licenses: Vec<SelectedLicenses>,
 
-    // User manual with help topics; provided argument is a help topic;
-    // Should display the index on None or non-existing topic.
-    // Perhaps this can be removed in the future; Clap has long_help() built in on the type Arg.
-    pub user_manual: Option<String>,
-
-    // Image transformation script
-    pub script: Option<String>,
-
     // Format to which an image will be converted (enforced).
     pub forced_output_format: Option<String>,
 

@@ -148,8 +148,6 @@ mod tests {
     ) -> Config {
         Config {
             licenses: vec![],
-            user_manual: None,
-            script: None,
             forced_output_format: force_format,
             disable_automatic_color_type_adjustment: false,
 
@@ -307,8 +305,6 @@ mod tests {
     fn test_jpeg_custom_quality() {
         let jpeg_conf = Config {
             licenses: vec![],
-            user_manual: None,
-            script: None,
             forced_output_format: None,
             disable_automatic_color_type_adjustment: false,
 
@@ -336,8 +332,6 @@ mod tests {
     fn test_output_unsupported_extension() {
         let jpeg_conf = Config {
             licenses: vec![],
-            user_manual: None,
-            script: None,
             forced_output_format: None,
             disable_automatic_color_type_adjustment: false,
 
@@ -362,8 +356,6 @@ mod tests {
     fn test_output_no_ext_or_ff() {
         let jpeg_conf = Config {
             licenses: vec![],
-            user_manual: None,
-            script: None,
             forced_output_format: None,
             disable_automatic_color_type_adjustment: false,
 
@@ -388,8 +380,6 @@ mod tests {
     fn test_output_unsupported_ff_with_ext() {
         let jpeg_conf = Config {
             licenses: vec![],
-            user_manual: None,
-            script: None,
             forced_output_format: Some("OiOi".into()), // unsupported format
             disable_automatic_color_type_adjustment: false,
 
@@ -414,8 +404,6 @@ mod tests {
     fn test_output_unsupported_ff_without_ext() {
         let jpeg_conf = Config {
             licenses: vec![],
-            user_manual: None,
-            script: None,
             forced_output_format: Some("OiOi".into()), // unsupported format
             disable_automatic_color_type_adjustment: false,
 

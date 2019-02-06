@@ -13,15 +13,6 @@ impl<'a> ImageOperationsProcessor<'a> {
         ImageOperationsProcessor { buffer }
     }
 
-    fn parse_script(&self, config: &Config) -> Result<Vec<Operation>, String> {
-        println!("Parsing image operations script.");
-
-        match &config.script {
-            Some(it) => operations::parse_script(&it),
-            None => Err("Script unavailable.".into()),
-        }
-    }
-
     fn apply_operations(&mut self, ops: &[Operation]) -> Result<(), String> {
         println!("Applying image operations.");
 
@@ -30,10 +21,12 @@ impl<'a> ImageOperationsProcessor<'a> {
 }
 
 impl<'a> ProcessMutWithConfig<Result<(), String>> for ImageOperationsProcessor<'a> {
-    fn process_mut(&mut self, config: &Config) -> Result<(), String> {
+    fn process_mut(&mut self, _config: &Config) -> Result<(), String> {
         // If we don't have the script option defined, do nothing.
-        if config.script.is_some() {
-            let operations = self.parse_script(config);
+
+        dbg!("TODO: ensure operations are handled per use case");
+        if dbg!(false) {
+            let operations: Result<Vec<Operation>, String> = Ok(vec![]);
 
             self.apply_operations(&operations?)
         } else {

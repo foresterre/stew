@@ -96,8 +96,6 @@ mod tests {
     fn setup_dummy_config(output: &str) -> Config {
         Config {
             licenses: vec![],
-            user_manual: None,
-            script: None,
             forced_output_format: None,
             disable_automatic_color_type_adjustment: false,
 

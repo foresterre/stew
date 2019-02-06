@@ -1,11 +1,11 @@
 [package]
 edition = "2018"
-name = "sic"
-version = "0.8.1"
+name = "stew"
+version = "0.1.0"
 authors = ["Martijn Gribnau <garm@ilumeo.com>"]
-description = "`sic` stands for simple image converter and is a partial front-end for the `image` crate."
+description = "Stew is a set of image transformation tools, adapted from `sic`."
 license = "MIT"
-repository = "https://github.com/foresterre/sic"
+repository = "https://github.com/foresterre/stew"
 readme = "README.md"
 exclude = [
     ".idea/*",
@@ -22,15 +22,13 @@ output-test-images = []
 arrayvec = "0.4.7"
 clap = "2.32.0"
 image = "0.20.1"
-pest = "2.0.2"
-pest_derive = "2.0.1"
 
 [[bin]]
-name = "sic"
-path = "src/main.rs"
+name = "convert"
+path = "src/bin/convert.rs"
 
 [lib]
-name = "sic_lib"
+name = "stew_lib"
 path = "src/lib.rs"
 
 [profile.release]
