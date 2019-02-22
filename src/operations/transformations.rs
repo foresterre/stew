@@ -19,12 +19,8 @@ impl ApplyOperation<Operation, DynamicImage, String> for DynamicImage {
                 verify_crop_selection(lx, ly, rx, ry)
                     .and_then(|_| verify_crop_selection_within_image_bounds(&self, lx, ly, rx, ry))
                     .map(|_| {
-                        let cropped = {
-                            let mut buffer = self.clone();
-                            buffer.crop(lx, ly, rx - lx, ry - ly)
-                        };
-
-                        cropped
+                        let mut buffer = self.clone();
+                        buffer.crop(lx, ly, rx - lx, ry - ly)
                     })
             }
             // We need to ensure here that Filter3x3's `it` (&[f32]) has length 9.

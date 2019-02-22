@@ -32,7 +32,6 @@ pub enum OpArg {
     UnsignedIntegerTuple4(u32, u32, u32, u32),
     FloatingPointArrayVec9(ArrayVec<[f32; 9]>),
     FloatingPointIntegerTuple2(f32, i32),
-
 }
 
 pub fn operation_by_name(name: &str, value: OpArg) -> Result<Operation, String> {

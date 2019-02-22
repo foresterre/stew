@@ -27,6 +27,10 @@ image = "0.21.0"
 name = "convert"
 path = "src/bin/convert.rs"
 
+[[bin]]
+name = "blur"
+path = "src/bin/blur.rs"
+
 [lib]
 name = "stew_lib"
 path = "src/lib.rs"

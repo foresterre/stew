@@ -1,5 +1,4 @@
 use stew_lib::get_app_skeleton;
-use clap::Arg;
 use stew_lib::run;
 
 const COMMAND_NAME: &str = "convert";

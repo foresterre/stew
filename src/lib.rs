@@ -1,15 +1,10 @@
-use std::path::Path;
-
 use clap::{App, Arg, ArgMatches};
 
 use crate::config::{
     Config, FormatEncodingSettings, JPEGEncodingSettings, PNMEncodingSettings, SelectedLicenses,
 };
 use crate::io::{export, import};
-use crate::operations::operation_by_name;
-use crate::operations::OpArg;
 use crate::operations::Operation;
-use crate::processor::conversion::ConversionProcessor;
 use crate::processor::encoding_format::EncodingFormatDecider;
 use crate::processor::image_operations::ImageOperationsProcessor;
 use crate::processor::license_display::LicenseDisplayProcessor;

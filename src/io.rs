@@ -1,8 +1,6 @@
 use std::io::stdin;
 use std::io::Read;
 use std::path::Path;
-use std::sync::mpsc::{channel, Receiver, Sender};
-use std::thread;
 
 use crate::config::Config;
 use crate::processor::conversion::ConversionProcessor;
@@ -12,10 +10,7 @@ use image;
 use crate::processor::ProcessWithConfig;
 
 pub fn import<P: AsRef<Path>>(maybe_path: Option<P>) -> Result<image::DynamicImage, String> {
-    maybe_path.map_or_else(
-        || import_from_input_stream_sync(),
-        |path| import_from_file_sync(path),
-    )
+    maybe_path.map_or_else(import_from_input_stream_sync, import_from_file_sync)
 }
 
 // TODO{foresterre}: Currently the method we use to read from the input stream is full blocking.
