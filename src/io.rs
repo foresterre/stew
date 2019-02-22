@@ -60,11 +60,3 @@ pub fn export(
         conversion_processor.process(&config)
     })
 }
-
-// export:
-// - current method:
-// - export to a lossless file variant (unless overwritten with `--output-format`)
-// - then decide based on if "-o" is defined or not:
-//      - if "-o <file>": write to file
-//      - else write image file to stdout
-//

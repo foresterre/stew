@@ -5,7 +5,10 @@ use clap::{App, Arg, ArgMatches};
 use crate::config::{
     Config, FormatEncodingSettings, JPEGEncodingSettings, PNMEncodingSettings, SelectedLicenses,
 };
-use crate::inexport::{export, import};
+use crate::io::{export, import};
+use crate::operations::operation_by_name;
+use crate::operations::OpArg;
+use crate::operations::Operation;
 use crate::processor::conversion::ConversionProcessor;
 use crate::processor::encoding_format::EncodingFormatDecider;
 use crate::processor::image_operations::ImageOperationsProcessor;
@@ -13,26 +16,15 @@ use crate::processor::license_display::LicenseDisplayProcessor;
 use crate::processor::{ProcessMutWithConfig, ProcessWithConfig};
 
 mod config;
-mod inexport;
-mod operations;
+mod io;
+pub mod operations;
 mod processor;
-
-#[macro_export]
-macro_rules! command {
-    ($name:expr) => {
-        fn main() -> Result<(), String> {
-            let matches = get_app_skeleton($name).get_matches();
-
-            run(&matches)
-        }
-    };
-}
 
 pub fn get_app_skeleton(name: &str) -> App<'static, 'static> {
     App::new(name)
         .version(env!("CARGO_PKG_VERSION"))
         .author("Martijn Gribnau <garm@ilumeo.com>")
-        .about("Stew is a set of image transformation tools, adapted from `sic`. ()")
+        .about("This tool is part of the Stew image toolset. Stew is a set of image transformation tools, adapted from `sic`.")
         .arg(Arg::with_name("forced_output_format")
             .short("f")
             .long("output-format")
@@ -116,7 +108,7 @@ pub fn get_default_config(matches: &ArgMatches) -> Result<Config, String> {
 /// The run function runs the sic application, taking the matches found by Clap.
 /// This function is separated from the main() function so that it can be used more easily in test cases.
 /// This function consumes the matches provided.
-pub fn run(matches: &ArgMatches) -> Result<(), String> {
+pub fn run(matches: &ArgMatches, operation: Option<Operation>) -> Result<(), String> {
     let options = get_default_config(&matches)?;
 
     let license_display_processor = LicenseDisplayProcessor::new();
@@ -124,10 +116,9 @@ pub fn run(matches: &ArgMatches) -> Result<(), String> {
 
     let mut img = import(matches.value_of("input"))?;
 
-    let mut image_operations_processor = ImageOperationsProcessor::new(&mut img);
+    let mut image_operations_processor = ImageOperationsProcessor::new(&mut img, operation);
     image_operations_processor.process_mut(&options)?;
 
     let format_decider = EncodingFormatDecider::new();
-
     export(&img, &format_decider, &options)
 }
