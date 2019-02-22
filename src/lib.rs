@@ -1,11 +1,11 @@
 use std::path::Path;
 
 use clap::{App, Arg, ArgMatches};
-use image;
 
 use crate::config::{
     Config, FormatEncodingSettings, JPEGEncodingSettings, PNMEncodingSettings, SelectedLicenses,
 };
+use crate::inexport::{export, import};
 use crate::processor::conversion::ConversionProcessor;
 use crate::processor::encoding_format::EncodingFormatDecider;
 use crate::processor::image_operations::ImageOperationsProcessor;
@@ -13,24 +13,36 @@ use crate::processor::license_display::LicenseDisplayProcessor;
 use crate::processor::{ProcessMutWithConfig, ProcessWithConfig};
 
 mod config;
+mod inexport;
 mod operations;
 mod processor;
+
+#[macro_export]
+macro_rules! command {
+    ($name:expr) => {
+        fn main() -> Result<(), String> {
+            let matches = get_app_skeleton($name).get_matches();
+
+            run(&matches)
+        }
+    };
+}
 
 pub fn get_app_skeleton(name: &str) -> App<'static, 'static> {
     App::new(name)
         .version(env!("CARGO_PKG_VERSION"))
         .author("Martijn Gribnau <garm@ilumeo.com>")
-        .about("Stew is a set of image transformation tools, adapted from `sic`. This is stew-{}")
+        .about("Stew is a set of image transformation tools, adapted from `sic`. ()")
         .arg(Arg::with_name("forced_output_format")
             .short("f")
             .long("output-format")
             .value_name("FORMAT")
             .help("Force the output image format to use FORMAT, regardless of the (if any) extension of the given output file path. \
-                Output formats (FORMAT values) supported: BMP, GIF, ICO, JPEG, PNG, PBM, PGM, PPM and PAM. ")
+                Output formats (FORMAT values) supported: BMP, GIF, ICO, JPEG, PNG, PBM, PGM, PPM and PAM.")
             .takes_value(true))
         .arg(Arg::with_name("license")
             .long("license")
-            .help("Displays the license of this piece of software (`sic`).")
+            .help("Displays the license of this piece of software (`stew`).")
             .takes_value(false))
         .arg(Arg::with_name("dep_licenses")
             .long("dep-licenses")
@@ -46,17 +58,19 @@ pub fn get_app_skeleton(name: &str) -> App<'static, 'static> {
             .help("Use ascii based encoding when using a PNM image output format (pbm, pgm or ppm). Doesn't apply to 'pam' (PNM Arbitrary Map)."))
         .arg(Arg::with_name("disable_automatic_color_type_adjustment")
             .long("disable-automatic-color-type-adjustment")
-            .help("Some image output formats do not support the color type of the image buffer prior to encoding. By default sic tries to adjust the color type. If this flag is provided, sic will not try to adjust the color type."))
-        .arg(Arg::with_name("input_file")
-            .help("Sets the input file")
-            .value_name("INPUT_FILE")
-            .required_unless_one(&["license", "dep_licenses", "user_manual"])
-            .index(1))
-        .arg(Arg::with_name("output_file")
-            .help("Sets the desired output file")
-            .value_name("OUTPUT_FILE")
-            .required_unless_one(&["license", "dep_licenses", "user_manual"])
-            .index(2))
+            .help("Some image output formats do not support the color type of the image buffer prior to encoding. By default Stew tries to adjust the color type. If this flag is provided, sic will not try to adjust the color type."))
+        .arg(Arg::with_name("input")
+            .long("input")
+            .short("i")
+            .value_name("FILE_INPUT")
+            .takes_value(true)
+            .help("Input of qualified (TBD) image file. Use this file option XOR pipe from stdin."))
+        .arg(Arg::with_name("output")
+            .long("output")
+            .short("o")
+            .value_name("FILE_OUTPUT")
+            .takes_value(true)
+            .help("Output of qualified (TBD) image file. Use this file option XOR pipe to stdout."))
 }
 
 // Here any option should not panic when invalid.
@@ -93,7 +107,7 @@ pub fn get_default_config(matches: &ArgMatches) -> Result<Config, String> {
             pnm_settings: PNMEncodingSettings::new(matches.is_present("pnm_encoding_ascii")),
         },
 
-        output: matches.value_of("output_file").map(|v| v.into()),
+        output: matches.value_of("output").map(|v| v.into()),
     };
 
     Ok(res)
@@ -108,21 +122,12 @@ pub fn run(matches: &ArgMatches) -> Result<(), String> {
     let license_display_processor = LicenseDisplayProcessor::new();
     license_display_processor.process(&options);
 
-    let input = matches
-        .value_of("input_file")
-        .ok_or_else(|| String::from("An INPUT was expected, but none was given."))
-        .map(|input_str| Path::new(input_str));
+    let mut img = import(matches.value_of("input"))?;
 
-    // open image, -> DynamicImage
-    let mut buffer = input.and_then(|path| image::open(path).map_err(|err| err.to_string()))?;
-
-    // perform image operations
-    let mut image_operations_processor = ImageOperationsProcessor::new(&mut buffer);
+    let mut image_operations_processor = ImageOperationsProcessor::new(&mut img);
     image_operations_processor.process_mut(&options)?;
 
-    let output_format_processor = EncodingFormatDecider::new();
-    let output_format = output_format_processor.process(&options);
+    let format_decider = EncodingFormatDecider::new();
 
-    let conversion_processor = ConversionProcessor::new(&buffer, output_format?);
-    conversion_processor.process(&options)
+    export(&img, &format_decider, &options)
 }

@@ -1,3 +1,6 @@
+use std::io::{self, Write};
+use std::path::Path;
+
 use crate::config::Config;
 use crate::processor::ProcessWithConfig;
 
@@ -51,29 +54,52 @@ impl<'a> ConversionProcessor<'a> {
             _ => None,
         }
     }
+
+    fn save_to_file<P: AsRef<Path>>(
+        buffer: &image::DynamicImage,
+        format: image::ImageOutputFormat,
+        path: P,
+    ) -> Result<(), String> {
+        let mut out = std::fs::File::create(path).map_err(|err| err.to_string())?;
+
+        buffer
+            .write_to(&mut out, format)
+            .map_err(|err| err.to_string())
+    }
+
+    fn export_to_stdout(
+        buffer: &image::DynamicImage,
+        format: image::ImageOutputFormat,
+    ) -> Result<(), String> {
+        let mut write_buffer = Vec::new();
+
+        buffer
+            .write_to(&mut write_buffer, format)
+            .map_err(|err| err.to_string())?;
+
+        io::stdout()
+            .write(&write_buffer)
+            .map(|_| ())
+            .map_err(|err| err.to_string())
+    }
 }
 
 impl<'a> ProcessWithConfig<Result<(), String>> for ConversionProcessor<'a> {
     fn process(&self, config: &Config) -> Result<(), String> {
+        let output_format = self.output_format.clone();
+        let color_processing =
+            &ConversionProcessor::preprocess_color_type(&config, &self.image, &output_format);
+
+        let export_buffer = match color_processing {
+            Some(replacement) => replacement,
+            None => &self.image,
+        };
+
         match &config.output {
-            Some(v) => {
-                let mut out = std::fs::File::create(&std::path::Path::new(v))
-                    .map_err(|err| err.to_string())?;
-
-                let output_format = self.output_format.clone();
-
-                if let Some(buf) =
-                    ConversionProcessor::preprocess_color_type(&config, &self.image, &output_format)
-                {
-                    buf.write_to(&mut out, output_format)
-                        .map_err(|err| err.to_string())
-                } else {
-                    self.image
-                        .write_to(&mut out, output_format)
-                        .map_err(|err| err.to_string())
-                }
-            }
-            None => Err("No valid output path found (type: convproc)".into()),
+            // Some() => write to file
+            Some(v) => ConversionProcessor::save_to_file(&export_buffer, output_format, v),
+            // None => write to stdout
+            None => ConversionProcessor::export_to_stdout(&export_buffer, output_format),
         }
     }
 }
@@ -82,11 +108,12 @@ impl<'a> ProcessWithConfig<Result<(), String>> for ConversionProcessor<'a> {
 mod tests {
     use std::io::Read;
 
-    use super::*;
     use crate::config::{
         Config, FormatEncodingSettings, JPEGEncodingSettings, PNMEncodingSettings,
     };
     use crate::processor::mod_test_includes::*;
+
+    use super::*;
 
     // Individual tests:
 

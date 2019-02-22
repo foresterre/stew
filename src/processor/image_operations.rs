@@ -29,6 +29,7 @@ impl<'a> ProcessMutWithConfig<Result<(), String>> for ImageOperationsProcessor<'
 
             self.apply_operations(&operations?)
         } else {
+            println!("image operations would run here...");
             Ok(())
         }
     }

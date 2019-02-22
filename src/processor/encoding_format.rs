@@ -111,11 +111,12 @@ impl ProcessWithConfig<Result<image::ImageOutputFormat, String>> for EncodingFor
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::config::{
         Config, FormatEncodingSettings, JPEGEncodingSettings, PNMEncodingSettings,
     };
     use crate::processor::mod_test_includes::*;
+
+    use super::*;
 
     const OUTPUT_NO_EXT: &str = "dont_care";
     const INPUT_FORMATS: &[&str] = &[

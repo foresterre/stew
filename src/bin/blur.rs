@@ -1,3 +1,4 @@
 use stew_lib::{command, get_app_skeleton, run};
 
-command!("convert");
+// blur (u32)
+command!("blur");
