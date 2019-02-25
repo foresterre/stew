@@ -4,6 +4,7 @@ use stew_lib::get_app_skeleton;
 use stew_lib::operations::operation_by_name;
 use stew_lib::operations::OpArg;
 use stew_lib::run;
+use stew_lib::run_display_licenses;
 
 const COMMAND_NAME: &str = "contrast";
 const FIRST_ARG: &str = "VALUE";
@@ -26,15 +27,19 @@ fn main() -> Result<(), String> {
         .global_setting(AppSettings::AllowLeadingHyphen);
 
     let matches = app.get_matches();
+    let license = matches.is_present("license");
+    let dep_licenses = matches.is_present("dep_licenses");
 
     if let Some(input1) = matches.value_of(FIRST_ARG) {
-        let parsed = input1
-            .parse::<f32>()
-            .map_err(|_| "The argument of the contrast command should be a floating point number (32 bits).")?;
+        let parsed = input1.parse::<f32>().map_err(|_| {
+            "The argument of the contrast command should be a floating point number (32 bits)."
+        })?;
 
         let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPoint(parsed));
 
         run(&matches, Some(op?))
+    } else if license || dep_licenses {
+        run_display_licenses(&matches)
     } else {
         Err(format!("{} definition was unexpected.", COMMAND_NAME))
     }

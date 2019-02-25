@@ -117,3 +117,11 @@ pub fn run(matches: &ArgMatches, operation: Option<Operation>) -> Result<(), Str
     let format_decider = EncodingFormatDecider::new();
     export(&img, &format_decider, &options)
 }
+
+pub fn run_display_licenses(matches: &ArgMatches) -> Result<(), String> {
+    let options = get_default_config(&matches)?;
+
+    let license_display_processor = LicenseDisplayProcessor::new();
+    let res = license_display_processor.process(&options);
+    Ok(res)
+}
