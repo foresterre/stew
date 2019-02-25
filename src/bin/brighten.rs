@@ -1,3 +1,4 @@
+use clap::AppSettings;
 use clap::Arg;
 use stew_lib::get_app_skeleton;
 use stew_lib::operations::operation_by_name;
@@ -8,20 +9,21 @@ const COMMAND_NAME: &str = "brighten";
 const FIRST_ARG: &str = "VALUE";
 
 fn main() -> Result<(), String> {
-    let app = get_app_skeleton(COMMAND_NAME).arg(
-        Arg::with_name(FIRST_ARG)
-            .help(
-                "VALUE represents the amount to brighten by. This value can both be positive \
-                (increase brightness) or negative (decrease brightness). \
-                The VALUE should be a 32 bit integer.",
-            )
-            .takes_value(true)
-            .allow_hyphen_values(true) // TODO{}: This doesn't seem to work
-            .required_unless_one(&["license", "dep_licenses"])
-            .index(1),
-    );
-
-    panic!("Work in progress!");
+    let app = get_app_skeleton(COMMAND_NAME)
+        .arg(
+            Arg::with_name(FIRST_ARG)
+                .help(
+                    "VALUE represents the amount to brighten by. This value can both be positive \
+                     (increase brightness) or negative (decrease brightness). \
+                     The VALUE should be a 32 bit integer.",
+                )
+                .takes_value(true)
+                .number_of_values(1)
+                .allow_hyphen_values(true) // TODO{}: This doesn't seem to work without
+                .required_unless_one(&["license", "dep_licenses"])
+                .index(1),
+        )
+        .global_setting(AppSettings::AllowLeadingHyphen);
 
     let matches = app.get_matches();
 
