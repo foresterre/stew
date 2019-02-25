@@ -15,7 +15,7 @@ fn main() -> Result<(), String> {
             )
             .takes_value(true)
             .required_unless_one(&["license", "dep_licenses"])
-            .index(1)
+            .index(1),
     );
 
     let matches = app.get_matches();
