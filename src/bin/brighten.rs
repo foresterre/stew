@@ -19,7 +19,7 @@ fn main() -> Result<(), String> {
                 )
                 .takes_value(true)
                 .number_of_values(1)
-                .allow_hyphen_values(true) // TODO{}: This doesn't seem to work without
+                .allow_hyphen_values(true)
                 .required_unless_one(&["license", "dep_licenses"])
                 .index(1),
         )
