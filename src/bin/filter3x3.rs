@@ -147,7 +147,10 @@ fn main() -> Result<(), String> {
 
                 run(&matches, Some(op?))
             }
-            _ => Err("Crop requires exactly 4 arguments (32 bit unsigned integer).".to_string()),
+            _ => Err(
+                "Filter3x3 requires exactly 9 arguments (32 bit floating point number)."
+                    .to_string(),
+            ),
         }
     }
 }
