@@ -64,7 +64,8 @@ fn main() -> Result<(), String> {
 
 fn parse_f32(input: &str) -> Result<f32, String> {
     input.parse::<f32>().map_err(|_| {
-        "The first argument of the unsharpen command should be a floating point number (f32).".to_string()
+        "The first argument of the unsharpen command should be a floating point number (f32)."
+            .to_string()
     })
 }
 
@@ -73,4 +74,3 @@ fn parse_i32(input: &str) -> Result<i32, String> {
         "The second argument of the unsharpen command should be an integer (i32).".to_string()
     })
 }
-

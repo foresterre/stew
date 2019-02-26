@@ -13,9 +13,7 @@ fn main() -> Result<(), String> {
     let app = get_app_skeleton(COMMAND_NAME)
         .arg(
             Arg::with_name(ARG1)
-                .help(
-                    "NEW_WIDTH' is the output image's width dimension.",
-                )
+                .help("NEW_WIDTH' is the output image's width dimension.")
                 .takes_value(true)
                 .number_of_values(1)
                 .required_unless_one(&["license", "dep_licenses"])
@@ -23,9 +21,7 @@ fn main() -> Result<(), String> {
         )
         .arg(
             Arg::with_name(ARG2)
-                .help(
-                    "NEW_HEIGHT' is the output image's height dimension.",
-                )
+                .help("NEW_HEIGHT' is the output image's height dimension.")
                 .takes_value(true)
                 .number_of_values(1)
                 .required_unless_one(&["license", "dep_licenses"])
@@ -38,17 +34,11 @@ fn main() -> Result<(), String> {
     if license_display {
         run_display_licenses(&matches)
     } else {
-        match (
-            matches.value_of(ARG1),
-            matches.value_of(ARG2)
-        ) {
+        match (matches.value_of(ARG1), matches.value_of(ARG2)) {
             (Some(w), Some(h)) => {
                 let op = operation_by_name(
                     COMMAND_NAME,
-                    OpArg::UnsignedIntegerTuple2(
-                        parse_u32(w)?,
-                        parse_u32(h)?
-                    ),
+                    OpArg::UnsignedIntegerTuple2(parse_u32(w)?, parse_u32(h)?),
                 );
 
                 run(&matches, Some(op?))
@@ -60,7 +50,6 @@ fn main() -> Result<(), String> {
 
 fn parse_u32(input: &str) -> Result<u32, String> {
     input.parse::<u32>().map_err(|_| {
-            "Both arguments of the resize command should be an unsigned integers (u32).".to_string()
+        "Both arguments of the resize command should be an unsigned integers (u32).".to_string()
     })
 }
-
