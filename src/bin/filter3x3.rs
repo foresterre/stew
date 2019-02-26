@@ -1,11 +1,11 @@
+use arrayvec::ArrayVec;
+use clap::AppSettings;
 use clap::Arg;
 use stew_lib::get_app_skeleton;
 use stew_lib::operations::operation_by_name;
 use stew_lib::operations::OpArg;
 use stew_lib::run;
 use stew_lib::run_display_licenses;
-use arrayvec::ArrayVec;
-use clap::AppSettings;
 
 const COMMAND_NAME: &str = "filter3x3";
 const ARG1: &str = "F1";
@@ -131,7 +131,6 @@ fn main() -> Result<(), String> {
                 Some(t1),
                 Some(t2),
                 Some(t3),
-
             ) => {
                 let mut vec = ArrayVec::new();
                 vec.push(parse_fp32(f1)?);
@@ -144,11 +143,7 @@ fn main() -> Result<(), String> {
                 vec.push(parse_fp32(t2)?);
                 vec.push(parse_fp32(t3)?);
 
-
-                let op = operation_by_name(
-                    COMMAND_NAME,
-                    OpArg::FloatingPointArrayVec9(vec)
-                );
+                let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPointArrayVec9(vec));
 
                 run(&matches, Some(op?))
             }
@@ -162,4 +157,3 @@ fn parse_fp32(input: &str) -> Result<f32, String> {
         "Arguments of the filter3x3 command should be floating point numbers (f32).".to_string()
     })
 }
-

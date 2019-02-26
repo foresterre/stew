@@ -106,6 +106,13 @@ pub fn get_default_config(matches: &ArgMatches) -> Result<Config, String> {
 pub fn run(matches: &ArgMatches, operation: Option<Operation>) -> Result<(), String> {
     let options = get_default_config(&matches)?;
 
+    if options.output.is_none() {
+        eprintln!(
+            "The default output format is BMP. Use --output-format <FORMAT> to specify \
+             a different output format."
+        );
+    }
+
     let license_display_processor = LicenseDisplayProcessor::new();
     license_display_processor.process(&options);
 

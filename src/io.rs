@@ -23,8 +23,10 @@ fn import_from_input_stream_sync() -> Result<image::DynamicImage, String> {
     let mut buffer = Vec::new();
 
     // Uses stderr because stdout is used to redirect the output image if no file is defined.
-    eprintln!("If stdin is empty and no input file is defined, the programs waits for input until a termination \
-    signal has been received (usually you can send it by pressing Ctrl+D in your terminal).");
+    eprintln!(
+        "If stdin is empty, the programs waits for input until a termination \
+         signal has been received (usually you can send it by pressing Ctrl+D in your terminal)."
+    );
 
     stdin().lock().read_to_end(&mut buffer).map_err(|err| {
         format!(
