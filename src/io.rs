@@ -22,7 +22,8 @@ fn import_from_input_stream_sync() -> Result<image::DynamicImage, String> {
     // We don't known the input size yet, so we allocate.
     let mut buffer = Vec::new();
 
-    println!("If stdin is empty and no input file is defined, the programs waits for input until a termination \
+    // Uses stderr because stdout is used to redirect the output image if no file is defined.
+    eprintln!("If stdin is empty and no input file is defined, the programs waits for input until a termination \
     signal has been received (usually you can send it by pressing Ctrl+D in your terminal).");
 
     stdin().lock().read_to_end(&mut buffer).map_err(|err| {
@@ -36,7 +37,8 @@ fn import_from_input_stream_sync() -> Result<image::DynamicImage, String> {
         return Err("Stdin was empty. To display the help page, use the `--help` flag.".to_string());
     }
 
-    println!("Read {} bytes. Continuing.", buffer.len());
+    // Uses stderr because stdout is used to redirect the output image if no file is defined.
+    eprintln!("Read {} bytes. Continuing.", buffer.len());
 
     image::load_from_memory(&buffer).map_err(|err| err.to_string())
 }

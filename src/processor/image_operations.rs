@@ -17,8 +17,6 @@ impl<'a> ImageOperationsProcessor<'a> {
     }
 
     fn apply_operations(&mut self, ops: &[Operation]) -> Result<(), String> {
-        println!("Applying image operation.");
-
         apply_operations_on_image(&mut self.buffer, ops)
     }
 }
