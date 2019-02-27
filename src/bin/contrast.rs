@@ -38,7 +38,7 @@ fn main() -> Result<(), String> {
 
                 run(&matches, Some(op?))
             }
-            _ => Err("contrast requires exactly 1 argument (32 bit floating point).".to_string()),
+            _ => Err("Contrast requires exactly 1 argument (32 bit floating point).".to_string()),
         }
     }
 }

@@ -38,7 +38,7 @@ fn main() -> Result<(), String> {
 
                 run(&matches, Some(op?))
             }
-            _ => Err("brighten requires exactly 1 argument (32 bit integer).".to_string()),
+            _ => Err("Brighten requires exactly 1 argument (32 bit integer).".to_string()),
         }
     }
 }

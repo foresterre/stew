@@ -1,10 +1,10 @@
+use clap::AppSettings;
 use clap::Arg;
 use stew_lib::get_app_skeleton;
 use stew_lib::operations::operation_by_name;
 use stew_lib::operations::OpArg;
 use stew_lib::run;
 use stew_lib::run_display_licenses;
-use clap::AppSettings;
 
 const COMMAND_NAME: &str = "blur";
 const ARG1: &str = "σ";
@@ -22,7 +22,6 @@ fn main() -> Result<(), String> {
             .index(1),
     )
         .global_setting(AppSettings::AllowLeadingHyphen);
-
 
     let matches = app.get_matches();
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
