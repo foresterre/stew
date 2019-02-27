@@ -20,6 +20,7 @@ pub fn get_app_skeleton(name: &str) -> App<'static, 'static> {
         .version(env!("CARGO_PKG_VERSION"))
         .author("Martijn Gribnau <garm@ilumeo.com>")
         .about("This tool is part of the Stew image toolset. Stew is a set of image transformation tools, adapted from `sic`.")
+        .after_help("For more information, visit: https://github.com/foresterre/stew")
         .arg(Arg::with_name("forced_output_format")
             .short("f")
             .long("output-format")
