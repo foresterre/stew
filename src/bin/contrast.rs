@@ -7,12 +7,12 @@ use stew_lib::run;
 use stew_lib::run_display_licenses;
 
 const COMMAND_NAME: &str = "contrast";
-const FIRST_ARG: &str = "VALUE";
+const ARG1: &str = "VALUE";
 
 fn main() -> Result<(), String> {
     let app = get_app_skeleton(COMMAND_NAME)
         .arg(
-            Arg::with_name(FIRST_ARG)
+            Arg::with_name(ARG1)
                 .help(
                     "VALUE represents the amount to adjust the contrast by. This value can both be positive \
                      (increase contrast) or negative (decrease contrast). \
@@ -27,20 +27,24 @@ fn main() -> Result<(), String> {
         .global_setting(AppSettings::AllowLeadingHyphen);
 
     let matches = app.get_matches();
-    let license = matches.is_present("license");
-    let dep_licenses = matches.is_present("dep_licenses");
+    let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
-    if let Some(input1) = matches.value_of(FIRST_ARG) {
-        let parsed = input1.parse::<f32>().map_err(|_| {
-            "The argument of the contrast command should be a floating point number (32 bits)."
-        })?;
-
-        let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPoint(parsed));
-
-        run(&matches, Some(op?))
-    } else if license || dep_licenses {
+    if license_display {
         run_display_licenses(&matches)
     } else {
-        Err(format!("{} definition was unexpected.", COMMAND_NAME))
+        match matches.value_of(ARG1) {
+            Some(v) => {
+                let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPoint(parse_f32(v)?));
+
+                run(&matches, Some(op?))
+            }
+            _ => Err("contrast requires exactly 1 argument (32 bit floating point).".to_string()),
+        }
     }
+}
+
+fn parse_f32(input: &str) -> Result<f32, String> {
+    input
+        .parse::<f32>()
+        .map_err(|_| "The argument of the contrast command should be an integer (i32).".to_string())
 }
