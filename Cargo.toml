@@ -1,9 +1,9 @@
 [package]
 edition = "2018"
 name = "stew"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Martijn Gribnau <garm@ilumeo.com>"]
-description = "Stew is a set of image transformation tools, adapted from `sic`."
+description = "Stew is a set of image transformation tools. It allows images to be transformed using individual executables and allows pipes to be used to combine multiple tools."
 license = "MIT"
 repository = "https://github.com/foresterre/stew"
 readme = "README.md"
