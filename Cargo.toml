@@ -1,7 +1,7 @@
 [package]
 edition = "2018"
 name = "stew"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Martijn Gribnau <garm@ilumeo.com>"]
 description = "Stew is a set of image transformation tools, adapted from `sic`."
 license = "MIT"
