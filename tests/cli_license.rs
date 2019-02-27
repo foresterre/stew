@@ -2,7 +2,7 @@ use std::process::{Command, Output};
 
 fn run_license_command() -> Output {
     Command::new("cargo")
-        .args(&["run", "--", "--license"])
+        .args(&["run", "--bin", "filter3x3", "--", "--license"])
         .output()
         .expect("Running test failed")
 }
@@ -12,7 +12,7 @@ fn cli_license_full() {
     let res = run_license_command();
 
     let parts = vec![
-        "Simple Image Converter license: \n\n",
+        "Stew image tools license:\n\n",
         include_str!("../LICENSE"),
         "\n\n\n",
     ];

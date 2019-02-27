@@ -3,6 +3,8 @@ use std::path::Path;
 use crate::config::Config;
 use crate::processor::ProcessWithConfig;
 
+const DEFAULT_PIPED_OUTPUT_FORMAT: image::ImageOutputFormat = image::ImageOutputFormat::BMP;
+
 #[derive(Debug)]
 pub struct EncodingFormatDecider;
 
@@ -88,6 +90,10 @@ impl EncodingFormatDecider {
     }
 
     fn compute_format(config: &Config) -> Result<image::ImageOutputFormat, String> {
+        if config.output.is_none() && config.forced_output_format.is_none() {
+            return Ok(DEFAULT_PIPED_OUTPUT_FORMAT);
+        }
+
         // 1. get the format type
         //   a. if not -f or and we have an extension
         //      use the extension to determine the type
@@ -111,11 +117,12 @@ impl ProcessWithConfig<Result<image::ImageOutputFormat, String>> for EncodingFor
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::config::{
         Config, FormatEncodingSettings, JPEGEncodingSettings, PNMEncodingSettings,
     };
     use crate::processor::mod_test_includes::*;
+
+    use super::*;
 
     const OUTPUT_NO_EXT: &str = "dont_care";
     const INPUT_FORMATS: &[&str] = &[

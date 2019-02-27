@@ -18,7 +18,7 @@ impl LicenseDisplayProcessor {
         for item in slice {
             match item {
                 SelectedLicenses::ThisSoftware => {
-                    println!("Simple Image Converter license: \n\n{}\n\n", SIC_LICENSE);
+                    println!("Stew image tools license:\n\n{}\n\n", SIC_LICENSE);
                 }
                 SelectedLicenses::Dependencies => println!("{}", DEP_LICENSES),
             };

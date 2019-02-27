@@ -21,11 +21,7 @@ output-test-images = []
 [dependencies]
 arrayvec = "0.4.7"
 clap = "2.32.0"
-image = "0.20.1"
-
-[[bin]]
-name = "convert"
-path = "src/bin/convert.rs"
+image = "0.21.0"
 
 [lib]
 name = "stew_lib"

@@ -19,12 +19,8 @@ impl ApplyOperation<Operation, DynamicImage, String> for DynamicImage {
                 verify_crop_selection(lx, ly, rx, ry)
                     .and_then(|_| verify_crop_selection_within_image_bounds(&self, lx, ly, rx, ry))
                     .map(|_| {
-                        let cropped = {
-                            let mut buffer = self.clone();
-                            buffer.crop(lx, ly, rx - lx, ry - ly)
-                        };
-
-                        cropped
+                        let mut buffer = self.clone();
+                        buffer.crop(lx, ly, rx - lx, ry - ly)
                     })
             }
             // We need to ensure here that Filter3x3's `it` (&[f32]) has length 9.
@@ -101,10 +97,12 @@ pub fn apply_operations_on_image(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::operations::mod_test_includes::*;
     use arrayvec::ArrayVec;
     use image::GenericImageView;
+
+    use crate::operations::mod_test_includes::*;
+
+    use super::*;
 
     #[test]
     fn test_blur() {
