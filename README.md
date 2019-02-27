@@ -1,5 +1,3 @@
-Stew is very much experimental and work in progress.
-
 # Stew
 
 Stew is a set of image transformation tools, adapted from [sic](https://github.com/foresterre/sic).
