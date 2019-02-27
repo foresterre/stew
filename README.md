@@ -42,6 +42,9 @@ cat botanical.jpg | crop 10 20 180 210 | blur 15 |  fliph -o target/out.png
 cat resources/botanical.jpg | ./target/debug/blur 80 |  ./target/debug/brighten -o target/out.png -70
 ```
 
+__Note: when `stdout` is used for the image output, extensions can't be used to determine the image output format.
+All Stew tools default to BMP as output format, but you can specify a different option using the `--output-format`
+ (shorthand `-f`) cli option, as demonstrated below:__
 ```
 cat resources/botanical.jpg | ./target/debug/unsharpen -f png 40 10 > target/out.png
 ```
