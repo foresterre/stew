@@ -1,4 +1,3 @@
-use arrayvec::ArrayVec;
 use clap::AppSettings;
 use clap::Arg;
 use stew_lib::get_app_skeleton;
@@ -132,18 +131,19 @@ fn main() -> Result<(), String> {
                 Some(t2),
                 Some(t3),
             ) => {
-                let mut vec = ArrayVec::new();
-                vec.push(parse_fp32(f1)?);
-                vec.push(parse_fp32(f2)?);
-                vec.push(parse_fp32(f3)?);
-                vec.push(parse_fp32(s1)?);
-                vec.push(parse_fp32(s2)?);
-                vec.push(parse_fp32(s3)?);
-                vec.push(parse_fp32(t1)?);
-                vec.push(parse_fp32(t2)?);
-                vec.push(parse_fp32(t3)?);
+                let arr: [f32; 9] = [
+                    parse_fp32(f1)?,
+                    parse_fp32(f2)?,
+                    parse_fp32(f3)?,
+                    parse_fp32(s1)?,
+                    parse_fp32(s2)?,
+                    parse_fp32(s3)?,
+                    parse_fp32(t1)?,
+                    parse_fp32(t2)?,
+                    parse_fp32(t3)?,
+                ];
 
-                let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPointArrayVec9(vec));
+                let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPointArray9(arr));
 
                 run(&matches, Some(op?))
             }

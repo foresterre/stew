@@ -26,7 +26,7 @@ impl ApplyOperation<Operation, DynamicImage, String> for DynamicImage {
             // We need to ensure here that Filter3x3's `it` (&[f32]) has length 9.
             // Otherwise it will panic, see: https://docs.rs/image/0.19.0/src/image/dynimage.rs.html#349
             // This check already happens within the `parse` module.
-            Operation::Filter3x3(ref it) => Ok(self.filter3x3(&it)),
+            Operation::Filter3x3(ref it) => Ok(self.filter3x3(it)),
             Operation::FlipHorizontal => Ok(self.fliph()),
             Operation::FlipVertical => Ok(self.flipv()),
             Operation::GrayScale => Ok(self.grayscale()),
@@ -97,7 +97,6 @@ pub fn apply_operations_on_image(
 
 #[cfg(test)]
 mod tests {
-    use arrayvec::ArrayVec;
     use image::GenericImageView;
 
     use crate::operations::mod_test_includes::*;
@@ -336,9 +335,7 @@ mod tests {
         let img: DynamicImage = setup_default_test_image();
         let cmp: DynamicImage = setup_default_test_image();
 
-        let operation = Operation::Filter3x3(ArrayVec::from([
-            1.0, 0.5, 0.0, 1.0, 0.5, 0.0, 1.0, 0.5, 0.0,
-        ]));
+        let operation = Operation::Filter3x3([1.0, 0.5, 0.0, 1.0, 0.5, 0.0, 1.0, 0.5, 0.0]);
 
         let done = img.apply_operation(&operation);
         assert!(done.is_ok());
