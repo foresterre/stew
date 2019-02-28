@@ -1,11 +1,8 @@
 language: rust
 rust:
   - stable
-  - nightly
 os:
   - linux
   - windows
 matrix:
-  allow_failures:
-    - rust: nightly
   fast_finish: true
