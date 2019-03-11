@@ -1,8 +1,8 @@
-use stew_lib::get_app_skeleton;
-use stew_lib::operations::operation_by_name;
-use stew_lib::operations::OpArg;
-use stew_lib::run;
-use stew_lib::run_display_licenses;
+use combostew::get_app_skeleton;
+use combostew::operations::operation_by_name;
+use combostew::operations::OpArg;
+use combostew::run;
+use combostew::run_display_licenses;
 
 const COMMAND_NAME: &str = "rotate180";
 
@@ -13,10 +13,10 @@ fn main() -> Result<(), String> {
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches)
+        run_display_licenses(&matches, stew_lib::get_tool_name())
     } else {
         let op = operation_by_name(COMMAND_NAME, OpArg::Empty);
 
-        run(&matches, Some(op?))
+        run(&matches, Some(op?), stew_lib::get_tool_name())
     }
 }

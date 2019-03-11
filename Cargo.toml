@@ -21,6 +21,7 @@ output-test-images = []
 [dependencies]
 clap = "2.32.0"
 image = "0.21.0"
+combostew = { path = "../combostew"}
 
 [lib]
 name = "stew_lib"
