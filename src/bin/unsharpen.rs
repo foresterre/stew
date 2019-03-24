@@ -1,9 +1,9 @@
 use clap::Arg;
-use combostew::get_app_skeleton;
 use combostew::operations::operation_by_name;
 use combostew::operations::OpArg;
 use combostew::run;
 use combostew::run_display_licenses;
+use combostew::{get_app_skeleton, get_default_config};
 
 const COMMAND_NAME: &str = "unsharpen";
 const ARG1: &str = "σ";
@@ -39,7 +39,7 @@ fn main() -> Result<(), String> {
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches, stew_lib::get_tool_name())
+        run_display_licenses(&matches, stew_lib::get_tool_name(), Vec::new())
     } else {
         match (
             matches.value_of(ARG1),
@@ -54,7 +54,8 @@ fn main() -> Result<(), String> {
                     ),
                 );
 
-                run(&matches, Some(op?), stew_lib::get_tool_name())
+                let config = get_default_config(&matches, stew_lib::get_tool_name(), Vec::new())?;
+                run(&matches, &mut [op?], &config)
             }
             _ => Err("Unsharpen requires exactly 2 arguments, the first being a floating point number (32 bit) \
             and the second an integer (32 bit).".to_string()),

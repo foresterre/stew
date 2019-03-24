@@ -1,10 +1,10 @@
 use clap::AppSettings;
 use clap::Arg;
-use combostew::get_app_skeleton;
 use combostew::operations::operation_by_name;
 use combostew::operations::OpArg;
 use combostew::run;
 use combostew::run_display_licenses;
+use combostew::{get_app_skeleton, get_default_config};
 
 const COMMAND_NAME: &str = "blur";
 const ARG1: &str = "σ";
@@ -27,13 +27,14 @@ fn main() -> Result<(), String> {
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches, stew_lib::get_tool_name())
+        run_display_licenses(&matches, stew_lib::get_tool_name(), Vec::new())
     } else {
         match matches.value_of(ARG1) {
             Some(v) => {
                 let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPoint(parse_f32(v)?));
 
-                run(&matches, Some(op?), stew_lib::get_tool_name())
+                let config = get_default_config(&matches, stew_lib::get_tool_name(), Vec::new())?;
+                run(&matches, &mut [op?], &config)
             }
             _ => Err("Blur requires exactly 1 argument (32 bit floating point).".to_string()),
         }

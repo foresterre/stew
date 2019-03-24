@@ -1,8 +1,8 @@
-use combostew::get_app_skeleton;
 use combostew::operations::operation_by_name;
 use combostew::operations::OpArg;
 use combostew::run;
 use combostew::run_display_licenses;
+use combostew::{get_app_skeleton, get_default_config};
 
 const COMMAND_NAME: &str = "rotate270";
 
@@ -13,10 +13,11 @@ fn main() -> Result<(), String> {
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches, stew_lib::get_tool_name())
+        run_display_licenses(&matches, stew_lib::get_tool_name(), Vec::new())
     } else {
         let op = operation_by_name(COMMAND_NAME, OpArg::Empty);
 
-        run(&matches, Some(op?), stew_lib::get_tool_name())
+        let config = get_default_config(&matches, stew_lib::get_tool_name(), Vec::new())?;
+        run(&matches, &mut [op?], &config)
     }
 }
