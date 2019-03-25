@@ -1,16 +1,16 @@
 use clap::Arg;
+use combostew::get_default_config;
 use combostew::operations::operation_by_name;
 use combostew::operations::OpArg;
 use combostew::run;
 use combostew::run_display_licenses;
-use combostew::{get_app_skeleton, get_default_config};
 
 const COMMAND_NAME: &str = "resize";
 const ARG1: &str = "NEW_WIDTH";
 const ARG2: &str = "NEW_HEIGHT'";
 
 fn main() -> Result<(), String> {
-    let app = get_app_skeleton(COMMAND_NAME)
+    let app = stew_lib::stew_app_skeleton(COMMAND_NAME)
         .arg(
             Arg::with_name(ARG1)
                 .help("NEW_WIDTH' is the output image's width dimension.")

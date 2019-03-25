@@ -1,13 +1,13 @@
+use combostew::get_default_config;
 use combostew::operations::operation_by_name;
 use combostew::operations::OpArg;
 use combostew::run;
 use combostew::run_display_licenses;
-use combostew::{get_app_skeleton, get_default_config};
 
 const COMMAND_NAME: &str = "flipv";
 
 fn main() -> Result<(), String> {
-    let app = get_app_skeleton(COMMAND_NAME);
+    let app = stew_lib::stew_app_skeleton(COMMAND_NAME);
 
     let matches = app.get_matches();
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
