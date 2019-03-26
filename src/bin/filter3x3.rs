@@ -1,10 +1,10 @@
 use clap::AppSettings;
 use clap::Arg;
-use stew_lib::get_app_skeleton;
-use stew_lib::operations::operation_by_name;
-use stew_lib::operations::OpArg;
-use stew_lib::run;
-use stew_lib::run_display_licenses;
+use combostew::get_default_config;
+use combostew::operations::operation_by_name;
+use combostew::operations::OpArg;
+use combostew::run;
+use combostew::run_display_licenses;
 
 const COMMAND_NAME: &str = "filter3x3";
 const ARG1: &str = "F1";
@@ -18,7 +18,7 @@ const ARG8: &str = "T2";
 const ARG9: &str = "T3";
 
 fn main() -> Result<(), String> {
-    let app = get_app_skeleton(COMMAND_NAME)
+    let app = stew_lib::stew_app_skeleton(COMMAND_NAME)
         .arg(
             Arg::with_name(ARG1)
                 .help("First element of the 3x3 box filter (32 bit floating point).")
@@ -106,7 +106,7 @@ fn main() -> Result<(), String> {
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches)
+        run_display_licenses(&matches, stew_lib::get_tool_name(), Vec::new())
     } else {
         // uh oh
         match (
@@ -145,7 +145,8 @@ fn main() -> Result<(), String> {
 
                 let op = operation_by_name(COMMAND_NAME, OpArg::FloatingPointArray9(arr));
 
-                run(&matches, Some(op?))
+                let config = get_default_config(&matches, stew_lib::get_tool_name(), Vec::new())?;
+                run(&matches, &mut [op?], &config)
             }
             _ => Err(
                 "Filter3x3 requires exactly 9 arguments (32 bit floating point number)."

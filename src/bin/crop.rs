@@ -1,9 +1,9 @@
 use clap::Arg;
-use stew_lib::get_app_skeleton;
-use stew_lib::operations::operation_by_name;
-use stew_lib::operations::OpArg;
-use stew_lib::run;
-use stew_lib::run_display_licenses;
+use combostew::get_default_config;
+use combostew::operations::operation_by_name;
+use combostew::operations::OpArg;
+use combostew::run;
+use combostew::run_display_licenses;
 
 const COMMAND_NAME: &str = "crop";
 const ARG1: &str = "LX";
@@ -12,7 +12,7 @@ const ARG3: &str = "RX";
 const ARG4: &str = "RY";
 
 fn main() -> Result<(), String> {
-    let app = get_app_skeleton(COMMAND_NAME)
+    let app = stew_lib::stew_app_skeleton(COMMAND_NAME)
         .arg(
             Arg::with_name(ARG1)
                 .help(
@@ -62,7 +62,7 @@ fn main() -> Result<(), String> {
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches)
+        run_display_licenses(&matches, stew_lib::get_tool_name(), Vec::new())
     } else {
         match (
             matches.value_of(ARG1),
@@ -81,7 +81,8 @@ fn main() -> Result<(), String> {
                     ),
                 );
 
-                run(&matches, Some(op?))
+                let config = get_default_config(&matches, stew_lib::get_tool_name(), Vec::new())?;
+                run(&matches, &mut [op?], &config)
             }
             _ => Err("Crop requires exactly 4 arguments (32 bit unsigned integer).".to_string()),
         }

@@ -1,16 +1,16 @@
 use clap::Arg;
-use stew_lib::get_app_skeleton;
-use stew_lib::operations::operation_by_name;
-use stew_lib::operations::OpArg;
-use stew_lib::run;
-use stew_lib::run_display_licenses;
+use combostew::get_default_config;
+use combostew::operations::operation_by_name;
+use combostew::operations::OpArg;
+use combostew::run;
+use combostew::run_display_licenses;
 
 const COMMAND_NAME: &str = "resize";
 const ARG1: &str = "NEW_WIDTH";
 const ARG2: &str = "NEW_HEIGHT'";
 
 fn main() -> Result<(), String> {
-    let app = get_app_skeleton(COMMAND_NAME)
+    let app = stew_lib::stew_app_skeleton(COMMAND_NAME)
         .arg(
             Arg::with_name(ARG1)
                 .help("NEW_WIDTH' is the output image's width dimension.")
@@ -32,7 +32,7 @@ fn main() -> Result<(), String> {
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches)
+        run_display_licenses(&matches, stew_lib::get_tool_name(), Vec::new())
     } else {
         match (matches.value_of(ARG1), matches.value_of(ARG2)) {
             (Some(w), Some(h)) => {
@@ -41,7 +41,8 @@ fn main() -> Result<(), String> {
                     OpArg::UnsignedIntegerTuple2(parse_u32(w)?, parse_u32(h)?),
                 );
 
-                run(&matches, Some(op?))
+                let config = get_default_config(&matches, stew_lib::get_tool_name(), Vec::new())?;
+                run(&matches, &mut [op?], &config)
             }
             _ => Err("Resize requires exactly 2 arguments (32 bit unsigned integer).".to_string()),
         }

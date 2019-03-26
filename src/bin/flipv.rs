@@ -1,22 +1,23 @@
-use stew_lib::get_app_skeleton;
-use stew_lib::operations::operation_by_name;
-use stew_lib::operations::OpArg;
-use stew_lib::run;
-use stew_lib::run_display_licenses;
+use combostew::get_default_config;
+use combostew::operations::operation_by_name;
+use combostew::operations::OpArg;
+use combostew::run;
+use combostew::run_display_licenses;
 
 const COMMAND_NAME: &str = "flipv";
 
 fn main() -> Result<(), String> {
-    let app = get_app_skeleton(COMMAND_NAME);
+    let app = stew_lib::stew_app_skeleton(COMMAND_NAME);
 
     let matches = app.get_matches();
     let license_display = matches.is_present("license") || matches.is_present("dep_licenses");
 
     if license_display {
-        run_display_licenses(&matches)
+        run_display_licenses(&matches, stew_lib::get_tool_name(), Vec::new())
     } else {
         let op = operation_by_name(COMMAND_NAME, OpArg::Empty);
 
-        run(&matches, Some(op?))
+        let config = get_default_config(&matches, stew_lib::get_tool_name(), Vec::new())?;
+        run(&matches, &mut [op?], &config)
     }
 }
