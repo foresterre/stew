@@ -7,7 +7,7 @@ use std::process::{Command, Output};
 
 macro_rules! win_input_path {
     () => {
-        "..\\..\\resources\\rainbow_8x6.bmp"
+        "resources\\rainbow_8x6.bmp"
     };
 }
 
