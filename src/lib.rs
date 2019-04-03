@@ -1,5 +1,5 @@
 use clap::App;
-use combostew::get_app_skeleton;
+use combostew_cli::get_app_skeleton;
 
 pub fn get_tool_name() -> &'static str {
     env!("CARGO_PKG_NAME")
