@@ -1,8 +1,8 @@
-use combostew::get_default_config;
 use combostew::operations::operation_by_name;
 use combostew::operations::OpArg;
-use combostew::run;
-use combostew::run_display_licenses;
+use combostew_cli::get_default_config;
+use combostew_cli::run;
+use combostew_cli::run_display_licenses;
 
 const COMMAND_NAME: &str = "fliph";
 

@@ -1,5 +1,5 @@
-use combostew::get_default_config;
-use combostew::run;
+use combostew_cli::get_default_config;
+use combostew_cli::run;
 
 const COMMAND_NAME: &str = "convert";
 
